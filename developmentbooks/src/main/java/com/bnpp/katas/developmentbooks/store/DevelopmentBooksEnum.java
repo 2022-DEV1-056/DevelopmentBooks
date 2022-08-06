@@ -1,5 +1,10 @@
 package com.bnpp.katas.developmentbooks.store;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum DevelopmentBooksEnum {
 
 	CLEAN_CODE(1, "Clean Code", "Robert Martin", 2008, 50.00,
@@ -19,62 +24,5 @@ public enum DevelopmentBooksEnum {
 	private int year;
 	private double price;
 	private String imageUrl;
-
-	DevelopmentBooksEnum(int id, String title, String author, int year, double price, String imageUrl) {
-		this.setId(id);
-		this.setTitle(title);
-		this.setAuthor(author);
-		this.setYear(year);
-		this.setPrice(price);
-		this.setImageUrl(imageUrl);
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	private void setId(int id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	private void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getAuthor() {
-		return author;
-	}
-
-	private void setAuthor(String author) {
-		this.author = author;
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	private void setYear(int year) {
-		this.year = year;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	private void setPrice(double price) {
-		this.price = price;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	private void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
-	}
 
 }
