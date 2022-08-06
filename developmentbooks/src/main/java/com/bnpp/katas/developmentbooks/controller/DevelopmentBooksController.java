@@ -11,13 +11,13 @@ import com.bnpp.katas.developmentbooks.dto.Book;
 import com.bnpp.katas.developmentbooks.service.DevelopmentBooksService;
 
 @RestController
-@RequestMapping("/api/developmentbooks")
+@RequestMapping("${developmentbooks.controller.path}")
 public class DevelopmentBooksController {
 
 	@Autowired
 	private DevelopmentBooksService developmentBooksService;
 
-	@GetMapping("/getBooks")
+	@GetMapping("${developmentbooks.endpoints.getbooks}")
 	public List<Book> getBooks() {
 		return developmentBooksService.getBooks();
 	}
