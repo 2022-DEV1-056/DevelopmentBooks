@@ -27,6 +27,7 @@ class CalculatePriceServiceTest {
 	private static final double PRICE_OF_THREE_DISTINCT_BOOKS = 135.00;
 	private static final double PRICE_OF_FOUR_DISTINCT_BOOKS = 160.00;
 	private static final double PRICE_OF_FIVE_DISTINCT_BOOKS = 187.50;
+	private static final double PRICE_OF_THREE_BOOKS_AFTER_APPLY_DISCOUNT_FOR_TWO = 145.00;
 
 	@Autowired
 	private CalculatePriceService calculatePriceService;
@@ -123,4 +124,19 @@ class CalculatePriceServiceTest {
 
 		assertEquals(PRICE_OF_FIVE_DISTINCT_BOOKS, finalPrice);
 	}
+	
+	@Test
+	@DisplayName("calculate price should apply 5% discount to only two distinct books")
+	void calculatePrice_shouldApplyFivePercentDiscountOnlyForTwoDistinctBooks() {
+		List<BookDto> listOfBooks = new ArrayList<BookDto>();
+		BookDto firstBook = new BookDto(ONE, ONE);
+		BookDto secondBook = new BookDto(TWO, TWO);
+		listOfBooks.add(firstBook);
+		listOfBooks.add(secondBook);
+
+		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks);
+
+		assertEquals(PRICE_OF_THREE_BOOKS_AFTER_APPLY_DISCOUNT_FOR_TWO, actualPrice);
+	}
+
 }
