@@ -33,7 +33,17 @@ public class CalculatePriceService {
 		double actualPriceforDiscountedItem = groupItems.stream()
 				.mapToDouble(bookId -> bookIdPriceMap.get(bookId) * ONE_QUANTITY).sum();
 		double discountedPrice = (actualPriceforDiscountedItem * getDiscountPercentage(discountGroup)) / HUNDRED;
-		groupItems.forEach(itemId -> {
+		cleanupDiscountedItems(itemIdQuantityMap, groupItems);
+		double priceForDiscountedItems = actualPriceforDiscountedItem - discountedPrice;
+		Set<Integer> remainingItems = itemIdQuantityMap.keySet();
+		double priceForRemainingItems = remainingItems.stream()
+				.mapToDouble(id -> itemIdQuantityMap.get(id) * bookIdPriceMap.get(id)).sum();
+
+		return (priceForDiscountedItems + priceForRemainingItems);
+	}
+
+	private void cleanupDiscountedItems(Map<Integer, Integer> itemIdQuantityMap, List<Integer> discountedItems) {
+		discountedItems.forEach(itemId -> {
 			int quantity = itemIdQuantityMap.get(itemId);
 			if (quantity > ONE_QUANTITY) {
 				itemIdQuantityMap.put(itemId, quantity - ONE_QUANTITY);
@@ -41,12 +51,6 @@ public class CalculatePriceService {
 				itemIdQuantityMap.remove(itemId);
 			}
 		});
-		double priceForDiscountedItems = actualPriceforDiscountedItem - discountedPrice;
-		Set<Integer> remainingItems = itemIdQuantityMap.keySet();
-		double priceForRemainingItems = remainingItems.stream()
-				.mapToDouble(id -> itemIdQuantityMap.get(id) * bookIdPriceMap.get(id)).sum();
-
-		return (priceForDiscountedItems + priceForRemainingItems);
 	}
 
 	private int getDiscountPercentage(long numberOfDistinctItems) {
