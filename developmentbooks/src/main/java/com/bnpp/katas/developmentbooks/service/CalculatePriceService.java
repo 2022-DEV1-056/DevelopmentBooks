@@ -16,7 +16,9 @@ public class CalculatePriceService {
 	private static final int HUNDRED = 100;
 	private static final int ZERO_PERCENT = 0;
 	private static final int FIVE_PERCENT = 5;
+	private static final int TEN_PERCENT = 10;
 	private static final int TWO_DISTINCT_BOOKS = 2;
+	private static final int THREE_DISTINCT_BOOKS = 3;
 
 	public Double calculatePrice(List<BookDto> listOfBooks) {
 		Map<Integer, Double> bookIdPriceMap = Arrays.stream(DevelopmentBooksEnum.values())
@@ -24,6 +26,7 @@ public class CalculatePriceService {
 
 		long distinctBooks = listOfBooks.stream().map(BookDto::getId).distinct().count();
 		int discountPercentage = (distinctBooks == TWO_DISTINCT_BOOKS) ? FIVE_PERCENT : ZERO_PERCENT;
+		discountPercentage = (distinctBooks == THREE_DISTINCT_BOOKS) ? TEN_PERCENT : discountPercentage;
 
 		double actualPrice = listOfBooks.stream()
 				.mapToDouble(book -> bookIdPriceMap.get(book.getId()) * book.getQuantity()).sum();
