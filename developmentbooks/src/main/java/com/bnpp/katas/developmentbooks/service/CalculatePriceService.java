@@ -17,7 +17,14 @@ public class CalculatePriceService {
 		Map<Integer, Double> bookIdPriceMap = Arrays.stream(DevelopmentBooksEnum.values())
 				.collect(Collectors.toMap(DevelopmentBooksEnum::getId, DevelopmentBooksEnum::getPrice));
 
-		return listOfBooks.stream().mapToDouble(book -> bookIdPriceMap.get(book.getId()) * book.getQuantity()).sum();
+		long distinctBooks = listOfBooks.stream().map(BookDto::getId).distinct().count();
+		int discountPercentage = (distinctBooks == 2) ? 5 : 0;
+
+		double actualPrice = listOfBooks.stream()
+				.mapToDouble(book -> bookIdPriceMap.get(book.getId()) * book.getQuantity()).sum();
+		double discountedPrice = (actualPrice * discountPercentage) / 100;
+
+		return (actualPrice - discountedPrice);
 	}
 
 }
