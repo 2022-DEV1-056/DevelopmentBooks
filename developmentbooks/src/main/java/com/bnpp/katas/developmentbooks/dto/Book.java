@@ -1,15 +1,17 @@
 package com.bnpp.katas.developmentbooks.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class Book {
 	private int id;
 	private String title;
 	private String author;
 	private int year;
 	private double price;
-	private String url;
+	private String imageUrl;
 }
