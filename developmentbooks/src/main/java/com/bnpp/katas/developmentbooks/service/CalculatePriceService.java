@@ -1,6 +1,7 @@
 package com.bnpp.katas.developmentbooks.service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -12,10 +13,11 @@ import com.bnpp.katas.developmentbooks.store.DevelopmentBooksEnum;
 @Service
 public class CalculatePriceService {
 
-	public Double calculatePrice(BookDto bookDto) {
+	public Double calculatePrice(List<BookDto> listOfBooks) {
 		Map<Integer, Double> bookIdPriceMap = Arrays.stream(DevelopmentBooksEnum.values())
 				.collect(Collectors.toMap(DevelopmentBooksEnum::getId, DevelopmentBooksEnum::getPrice));
-		return bookIdPriceMap.get(bookDto.getId()) * bookDto.getQuantity();
+
+		return listOfBooks.stream().mapToDouble(book -> bookIdPriceMap.get(book.getId()) * book.getQuantity()).sum();
 	}
 
 }
