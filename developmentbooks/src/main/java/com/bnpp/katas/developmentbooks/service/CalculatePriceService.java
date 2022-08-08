@@ -25,7 +25,7 @@ public class CalculatePriceService {
 	private static final int ZERO_PERCENT = 0;
 	private static final int ONE_QUANTITY = 1;
 
-	public PriceSummaryDto calculatePrice(List<BookDto> listOfBooks) {
+	public PriceSummaryDto getPriceSummary(List<BookDto> listOfBooks) {
 		Map<Integer, Integer> bookIdQuantityMap = listOfBooks.stream()
 				.collect(Collectors.toMap(BookDto::getId, BookDto::getQuantity));
 		List<BookGroup> listOfBookGroup = getBookGroupswithDiscount(bookIdQuantityMap, new ArrayList<>());
