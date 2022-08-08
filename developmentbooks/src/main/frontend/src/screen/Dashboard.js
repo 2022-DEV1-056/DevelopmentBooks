@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import "../styles/dashboard.css";
 import axios from "axios";
+import Product from "../components/Product";
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
@@ -20,18 +21,10 @@ const Dashboard = () => {
       <div className="content">
         <div className="products">
           {books.map((book) => {
-            const { title, author, imageUrl, price, id, year } = book;
             return (
-              <div className="product" key={id}>
-                <div className="product-image">
-                  <img src={imageUrl} alt={title} />
-                </div>
-                <p className="product-title">{title}</p>
-                <p className="author">
-                  By {author} ({year})
-                </p>
-                <p className="product-price">{price}</p>
-              </div>
+              <Fragment key={book.id}>
+                <Product book={book} />
+              </Fragment>
             );
           })}
         </div>
