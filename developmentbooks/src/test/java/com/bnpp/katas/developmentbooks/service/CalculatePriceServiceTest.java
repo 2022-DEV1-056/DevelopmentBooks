@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bnpp.katas.developmentbooks.dto.BookDto;
+import com.bnpp.katas.developmentbooks.dto.PriceSummaryDto;
 
 @SpringBootTest
 class CalculatePriceServiceTest {
@@ -29,6 +30,8 @@ class CalculatePriceServiceTest {
 	private static final double PRICE_OF_FIVE_DISTINCT_BOOKS = 187.50;
 	private static final double PRICE_OF_THREE_BOOKS_AFTER_APPLY_DISCOUNT_FOR_TWO = 145.00;
 	private static final double PRICE_OF_BOOKS_APPLY_DISCOUNT_TO_DISTINCT_BOOKS = 372.5;
+	private static final double ACTUALPRICE_OF_NINE_BOOKS = 450;
+	private static final double DISCOUNTPRICE_FOR_NINEBOOKS = 77.5;
 
 	@Autowired
 	private CalculatePriceService calculatePriceService;
@@ -40,7 +43,7 @@ class CalculatePriceServiceTest {
 		BookDto bookDto = new BookDto(ONE, ONE);
 		listOfBooks.add(bookDto);
 
-		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(BOOK_PRICE, actualPrice);
 	}
@@ -53,7 +56,7 @@ class CalculatePriceServiceTest {
 		BookDto bookDto = new BookDto(ONE, quantities);
 		listOfBooks.add(bookDto);
 
-		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(expectedPrice, actualPrice);
 	}
@@ -67,7 +70,7 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(firstBook);
 		listOfBooks.add(secondBook);
 
-		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(PRICE_OF_TWO_DISTINCT_BOOKS, actualPrice);
 	}
@@ -83,7 +86,7 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(secondBook);
 		listOfBooks.add(thirdBook);
 
-		Double finalPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double finalPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(PRICE_OF_THREE_DISTINCT_BOOKS, finalPrice);
 	}
@@ -101,7 +104,7 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(thirdBook);
 		listOfBooks.add(fourBook);
 
-		Double finalPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double finalPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(PRICE_OF_FOUR_DISTINCT_BOOKS, finalPrice);
 	}
@@ -121,7 +124,7 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(fourBook);
 		listOfBooks.add(fifthBook);
 
-		Double finalPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double finalPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(PRICE_OF_FIVE_DISTINCT_BOOKS, finalPrice);
 	}
@@ -135,7 +138,7 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(firstBook);
 		listOfBooks.add(secondBook);
 
-		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(PRICE_OF_THREE_BOOKS_AFTER_APPLY_DISCOUNT_FOR_TWO, actualPrice);
 	}
@@ -155,9 +158,30 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(fourBook);
 		listOfBooks.add(fifthBook);
 
-		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks);
+		Double actualPrice = calculatePriceService.calculatePrice(listOfBooks).getFinalPrice();
 
 		assertEquals(PRICE_OF_BOOKS_APPLY_DISCOUNT_TO_DISTINCT_BOOKS, actualPrice);
 	}
 
+	@Test
+	@DisplayName("calculate price should return detailed price summary")
+	void calculatePrice_shouldReturnDetailedPriceSummary() {
+		List<BookDto> listOfBooks = new ArrayList<BookDto>();
+		BookDto firstBook = new BookDto(ONE, ONE);
+		BookDto secondBook = new BookDto(TWO, TWO);
+		BookDto thirdBook = new BookDto(THREE, THREE);
+		BookDto fourBook = new BookDto(FOUR, TWO);
+		BookDto fifthBook = new BookDto(FIVE, ONE);
+		listOfBooks.add(firstBook);
+		listOfBooks.add(secondBook);
+		listOfBooks.add(thirdBook);
+		listOfBooks.add(fourBook);
+		listOfBooks.add(fifthBook);
+
+		PriceSummaryDto priceSummary = calculatePriceService.calculatePrice(listOfBooks);
+		
+		assertEquals(ACTUALPRICE_OF_NINE_BOOKS, priceSummary.getActualPrice());
+		assertEquals(DISCOUNTPRICE_FOR_NINEBOOKS, priceSummary.getTotalDiscount());
+		assertEquals(PRICE_OF_BOOKS_APPLY_DISCOUNT_TO_DISTINCT_BOOKS, priceSummary.getFinalPrice());
+	}
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.bnpp.katas.developmentbooks.dto.BookDto;
 import com.bnpp.katas.developmentbooks.dto.BookGroup;
+import com.bnpp.katas.developmentbooks.dto.PriceSummaryDto;
 import com.bnpp.katas.developmentbooks.store.DevelopmentBooksEnum;
 import com.bnpp.katas.developmentbooks.store.DiscountProviderEnum;
 
@@ -24,7 +25,7 @@ public class CalculatePriceService {
 	private static final int ZERO_PERCENT = 0;
 	private static final int ONE_QUANTITY = 1;
 
-	public Double calculatePrice(List<BookDto> listOfBooks) {
+	public PriceSummaryDto calculatePrice(List<BookDto> listOfBooks) {
 		Map<Integer, Integer> bookIdQuantityMap = listOfBooks.stream()
 				.collect(Collectors.toMap(BookDto::getId, BookDto::getQuantity));
 		List<BookGroup> listOfBookGroup = getBookGroupswithDiscount(bookIdQuantityMap, new ArrayList<>());
@@ -32,7 +33,12 @@ public class CalculatePriceService {
 		listOfBookGroup.add(booksWithoutDiscount);
 		double actualPrice = listOfBookGroup.stream().mapToDouble(BookGroup::getActualPrice).sum();
 		double discount = listOfBookGroup.stream().mapToDouble(BookGroup::getDiscount).sum();
-		return (actualPrice - discount);
+		PriceSummaryDto priceSummaryDto = new PriceSummaryDto();
+		priceSummaryDto.setListOfBookGroups(listOfBookGroup);
+		priceSummaryDto.setActualPrice(actualPrice);
+		priceSummaryDto.setTotalDiscount(discount);
+		priceSummaryDto.setFinalPrice(actualPrice - discount);
+		return priceSummaryDto;
 	}
 
 	private List<BookGroup> getBookGroupswithDiscount(Map<Integer, Integer> bookIdQuantityMap,
