@@ -99,8 +99,8 @@ public class CalculatePriceService {
 		numberOfBooksToGroup = getNumberOfBooksToGroup(bookIdQuantityMap, numberOfBooksToGroup);
 		Optional<DiscountProviderEnum> discount = getDiscount(numberOfBooksToGroup);
 		if (discount.isPresent()) {
-			int bookGroupSize = discount.get().getNumberOfDistinctItems();
-			List<Integer> listOfDistinctBooks = bookIdQuantityMap.keySet().stream().limit(bookGroupSize)
+			int bookToGroupBasedOnDiscount = discount.get().getNumberOfDistinctItems();
+			List<Integer> listOfDistinctBooks = bookIdQuantityMap.keySet().stream().limit(bookToGroupBasedOnDiscount)
 					.collect(Collectors.toList());
 			BookGroup currentBookGroup = getBookGroup(listOfDistinctBooks);
 			bookGroup.add(currentBookGroup);
@@ -159,8 +159,8 @@ public class CalculatePriceService {
 		});
 	}
 
-	private int getDiscountPercentage(int numberOfDistinctItems) {
-		Optional<DiscountProviderEnum> discount = getDiscount(numberOfDistinctItems);
+	private int getDiscountPercentage(int numberOfDistinctBooks) {
+		Optional<DiscountProviderEnum> discount = getDiscount(numberOfDistinctBooks);
 		return (discount.isPresent()) ? discount.get().getDiscountPercentage() : ZERO_PERCENT;
 	}
 
