@@ -33,9 +33,12 @@ class CalculatePriceServiceTest {
 	private static final double PRICE_OF_FOUR_DISTINCT_BOOKS = 160.00;
 	private static final double PRICE_OF_FIVE_DISTINCT_BOOKS = 187.50;
 	private static final double PRICE_OF_THREE_BOOKS_AFTER_APPLY_DISCOUNT_FOR_TWO = 145.00;
-	private static final double PRICE_OF_BOOKS_APPLY_DISCOUNT_TO_DISTINCT_BOOKS = 372.5;
-	private static final double ACTUALPRICE_OF_NINE_BOOKS = 450;
-	private static final double DISCOUNTPRICE_FOR_NINEBOOKS = 77.5;
+	private static final double PRICE_OF_BOOKS_APPLY_DISCOUNT_TO_DISTINCT_BOOKS = 370.00;
+	private static final double ACTUALPRICE_OF_NINE_BOOKS = 450.00;
+	private static final double DISCOUNTPRICE_FOR_NINEBOOKS = 80.00;
+	private static final double ACTUALPRICE_OF_EIGHT_BOOKS = 400.00;
+	private static final double DISCOUNTPRICE_FOR_EIGHT_BOOKS = 80.00;
+	private static final double PRICE_OF_EIGHT_BOOKS_AFTER_DISCOUNT = 320.00;
 
 	@Autowired
 	private CalculatePriceService calculatePriceService;
@@ -201,5 +204,27 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(thirdBook);
 
 		assertThrows(BookNotFoundException.class, () -> calculatePriceService.getPriceSummary(listOfBooks));
+	}
+
+	@Test
+	@DisplayName("fetch price summary should return price summary with best discount")
+	void calculatePrice_shouldReturnPriceSummaryWithBestDiscount() {
+		List<BookDto> listOfBooks = new ArrayList<BookDto>();
+		BookDto firstBook = new BookDto(ONE, TWO);
+		BookDto secondBook = new BookDto(TWO, TWO);
+		BookDto thirdBook = new BookDto(THREE, TWO);
+		BookDto fourBook = new BookDto(FOUR, ONE);
+		BookDto fifthBook = new BookDto(FIVE, ONE);
+		listOfBooks.add(firstBook);
+		listOfBooks.add(secondBook);
+		listOfBooks.add(thirdBook);
+		listOfBooks.add(fourBook);
+		listOfBooks.add(fifthBook);
+
+		PriceSummaryDto priceSummary = calculatePriceService.getPriceSummary(listOfBooks);
+
+		assertEquals(ACTUALPRICE_OF_EIGHT_BOOKS, priceSummary.getActualPrice());
+		assertEquals(DISCOUNTPRICE_FOR_EIGHT_BOOKS, priceSummary.getTotalDiscount());
+		assertEquals(PRICE_OF_EIGHT_BOOKS_AFTER_DISCOUNT, priceSummary.getFinalPrice());
 	}
 }
