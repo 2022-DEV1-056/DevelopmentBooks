@@ -52,3 +52,20 @@
     background-color: #4297ef !important;
     width: 7.8rem !important;
 }
+
+.discount-cart-panel{
+    float: left;
+    margin: 0 auto;
+}
+  
+.discount{
+    border-radius: 20px;
+    background: #94bb38;
+    padding: 2rem 3.4rem;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: x-large;
+    list-style: circle;
+    line-height: 3.2rem;
+    color: darkgreen;
+}
