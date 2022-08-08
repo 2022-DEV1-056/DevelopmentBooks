@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { QuantityPicker } from "react-qty-picker";
 
 const Product = (props) => {
   const { title, author, imageUrl, price, id, year } = props.book;
@@ -21,6 +22,9 @@ const Product = (props) => {
         By {author} ({year})
       </p>
       <p className="product-price">{getFormattedPrice(price)}</p>
+      <span className="product-quantity">
+        <QuantityPicker min={0} smooth name="quantity" />
+      </span>
     </div>
   );
 };

@@ -31,4 +31,12 @@ describe("Product component", () => {
     const { getByText } = within(container.querySelector(".product-price"));
     expect(getByText("50,00 €")).toBeInTheDocument();
   });
+
+  test("should display quantity picker", () => {
+    const { container } = setUp();
+
+    expect(
+      container.querySelector(".product-quantity").firstElementChild
+    ).toHaveAttribute("data-quantity", "");
+  });
 });

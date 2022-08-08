@@ -42,3 +42,13 @@
 .product-price{
     font-weight: bolder;
 }
+
+[data-quantity] {
+    display: inline-block;
+    width: 7.8rem !important;
+}
+
+[data-quantity] input {
+    background-color: #4297ef !important;
+    width: 7.8rem !important;
+}
