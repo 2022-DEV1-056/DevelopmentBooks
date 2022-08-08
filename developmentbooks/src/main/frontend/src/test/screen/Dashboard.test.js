@@ -1,4 +1,4 @@
-import { render, waitFor } from "@testing-library/react";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import Dashboard from "../../screen/Dashboard";
 import axios from "axios";
 import getBooksResponse from "./responses/getBooks.json";
@@ -116,6 +116,25 @@ describe("load development books dashboard", () => {
       await waitFor(() => container.getElementsByClassName("product"));
 
       expect(container.querySelector(".calculate-price-btn")).toBeDisabled();
+    });
+
+    test("should enable calculate price button when a product is added to the cart", async () => {
+      const { container } = setUp();
+
+      const products = await waitFor(() =>
+        container.getElementsByClassName("products")
+      );
+      fireEvent(
+        products[0].querySelector(".add"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(
+        container.querySelector(".calculate-price-btn")
+      ).not.toBeDisabled();
     });
   });
 });

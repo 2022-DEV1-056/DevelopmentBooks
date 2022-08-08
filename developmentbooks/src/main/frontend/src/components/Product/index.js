@@ -23,7 +23,12 @@ const Product = (props) => {
       </p>
       <p className="product-price">{getFormattedPrice(price)}</p>
       <span className="product-quantity">
-        <QuantityPicker min={0} smooth name="quantity" />
+        <QuantityPicker
+          min={0}
+          smooth
+          name="quantity"
+          onChange={(value) => props.addToCart(id, value)}
+        />
       </span>
     </div>
   );
@@ -31,6 +36,7 @@ const Product = (props) => {
 
 Product.propTypes = {
   book: PropTypes.object.isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
 export default Product;

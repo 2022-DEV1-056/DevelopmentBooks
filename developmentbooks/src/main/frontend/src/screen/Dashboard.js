@@ -6,6 +6,8 @@ import Product from "../components/Product";
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
   const [discounts, setDiscounts] = useState({});
+  const [cart, setCart] = useState([]);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     axios
@@ -19,6 +21,27 @@ const Dashboard = () => {
         setDiscounts(response.data);
       });
   }, []);
+
+  const addToCart = (id, value) => {
+    const check_index = cart.findIndex((item) => item.id === id);
+    if (check_index !== -1) {
+      if (value === 0) {
+        cart.splice(check_index, 1);
+      } else {
+        cart[check_index].quantity = value;
+      }
+    } else {
+      cart.push({ id: id, quantity: value });
+    }
+
+    updateButtonStatus(cart);
+    setCart(cart);
+  };
+
+  const updateButtonStatus = (cart) => {
+    setIsButtonDisabled(cart.length === 0);
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -34,7 +57,7 @@ const Dashboard = () => {
               {books.map((book) => {
                 return (
                   <Fragment key={book.id}>
-                    <Product book={book} />
+                    <Product book={book} addToCart={addToCart} />
                   </Fragment>
                 );
               })}
@@ -49,7 +72,10 @@ const Dashboard = () => {
                 ))}
               </ul>
               <div className="cart">
-                <button className="calculate-price-btn" disabled={true}>
+                <button
+                  className="calculate-price-btn"
+                  disabled={isButtonDisabled}
+                >
                   Calculate Price
                 </button>
               </div>

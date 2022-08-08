@@ -12,7 +12,7 @@ const setUp = () => {
       "https://github.com/stephane-genicot/katas/raw/master/images/Kata_DevelopmentBooks_CleanCode.png?raw=true",
   };
 
-  return render(<Product book={book} />);
+  return render(<Product book={book} addToCart={() => {}} />);
 };
 
 describe("Product component", () => {
