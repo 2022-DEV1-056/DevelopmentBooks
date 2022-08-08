@@ -20,10 +20,18 @@ const Dashboard = () => {
       <div className="content">
         <div className="products">
           {books.map((book) => {
+            const { title, author, imageUrl, price, id, year } = book;
             return (
-              <p className="product" key={book.id}>
-                {book.title}
-              </p>
+              <div className="product" key={id}>
+                <div className="product-image">
+                  <img src={imageUrl} alt={title} />
+                </div>
+                <p className="product-title">{title}</p>
+                <p className="author">
+                  By {author} ({year})
+                </p>
+                <p className="product-price">{price}</p>
+              </div>
             );
           })}
         </div>

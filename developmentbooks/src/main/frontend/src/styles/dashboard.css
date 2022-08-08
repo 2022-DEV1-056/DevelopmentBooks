@@ -8,3 +8,37 @@
     margin: 0 auto;
     color: white;
 }
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    float: left;
+}
+
+.product{
+    display: block;
+    margin: 0.9rem 1.2rem;
+    background: 2px #f3f3f3;
+    border: 1px solid #aaa;
+    padding: 1.2rem 0.6rem 0.6rem 0.6rem;
+    text-align: center;
+}
+
+.product-image{
+    height: 262px;
+}
+
+.product-title{
+  color: #292b83;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.author{
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.product-price{
+    font-weight: bolder;
+}
