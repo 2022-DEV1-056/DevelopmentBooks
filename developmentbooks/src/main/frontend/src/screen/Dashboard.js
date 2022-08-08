@@ -5,6 +5,7 @@ import Product from "../components/Product";
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
+  const [discounts, setDiscounts] = useState({});
 
   useEffect(() => {
     axios
@@ -12,7 +13,11 @@ const Dashboard = () => {
       .then((response) => {
         setBooks(response.data);
       });
-    axios.get("http://localhost:8080/api/developmentbooks/getDiscountDetails");
+    axios
+      .get("http://localhost:8080/api/developmentbooks/getDiscountDetails")
+      .then((response) => {
+        setDiscounts(response.data);
+      });
   }, []);
   return (
     <div className="container">
@@ -24,15 +29,27 @@ const Dashboard = () => {
           <h1 className="loading-indicator">Loading...</h1>
         )}
         {books.length !== 0 && (
-          <div className="products">
-            {books.map((book) => {
-              return (
-                <Fragment key={book.id}>
-                  <Product book={book} />
-                </Fragment>
-              );
-            })}
-          </div>
+          <Fragment>
+            <div className="products">
+              {books.map((book) => {
+                return (
+                  <Fragment key={book.id}>
+                    <Product book={book} />
+                  </Fragment>
+                );
+              })}
+            </div>
+            <div className="discount-cart-panel">
+              <ul className="discount">
+                {Object.keys(discounts).map((distinctBooks) => (
+                  <li key={distinctBooks}>
+                    Buy {distinctBooks} different books and get{" "}
+                    {discounts[distinctBooks]}% discount.
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Fragment>
         )}
       </div>
     </div>

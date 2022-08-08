@@ -2,6 +2,7 @@ import { render, waitFor } from "@testing-library/react";
 import Dashboard from "../../screen/Dashboard";
 import axios from "axios";
 import getBooksResponse from "./responses/getBooks.json";
+import getDiscountDetailsResponse from "./responses/getDiscountDetails.json";
 
 afterEach(() => {
   axios.get.mockClear();
@@ -67,6 +68,34 @@ describe("load development books dashboard", () => {
       expect(axios.get).toHaveBeenCalledWith(
         expect.stringMatching(/\/api\/developmentbooks\/getDiscountDetails/)
       );
+    });
+
+    test("should display discount details", async () => {
+      axios.get.mockImplementation((url) => {
+        if (url.indexOf("/api/developmentbooks/getBooks") !== -1) {
+          return Promise.resolve({
+            status: 200,
+            data: getBooksResponse,
+          });
+        }
+        if (url.indexOf("/api/developmentbooks/getDiscountDetails") !== -1) {
+          return Promise.resolve({
+            status: 200,
+            data: getDiscountDetailsResponse,
+          });
+        }
+        return new Promise(() => {});
+      });
+
+      const { container } = render(<Dashboard />);
+      const discounts = await waitFor(() => {
+        const discountWrapper = container.firstChild.querySelector(
+          ".discount-cart-panel ul.discount"
+        );
+        return discountWrapper.querySelectorAll("li");
+      });
+
+      expect(discounts.length).toBe(4);
     });
   });
 });
