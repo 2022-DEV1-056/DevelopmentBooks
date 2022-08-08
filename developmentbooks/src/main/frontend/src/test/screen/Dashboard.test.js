@@ -9,6 +9,26 @@ afterEach(() => {
 });
 jest.mock("axios");
 
+const setUp = () => {
+  axios.get.mockImplementation((url) => {
+    if (url.indexOf("/api/developmentbooks/getBooks") !== -1) {
+      return Promise.resolve({
+        status: 200,
+        data: getBooksResponse,
+      });
+    }
+    if (url.indexOf("/api/developmentbooks/getDiscountDetails") !== -1) {
+      return Promise.resolve({
+        status: 200,
+        data: getDiscountDetailsResponse,
+      });
+    }
+    return new Promise(() => {});
+  });
+
+  return render(<Dashboard />);
+};
+
 describe("load development books dashboard", () => {
   test("should display development dashboard title", () => {
     axios.get.mockImplementation(() => new Promise(() => {}));
@@ -71,23 +91,8 @@ describe("load development books dashboard", () => {
     });
 
     test("should display discount details", async () => {
-      axios.get.mockImplementation((url) => {
-        if (url.indexOf("/api/developmentbooks/getBooks") !== -1) {
-          return Promise.resolve({
-            status: 200,
-            data: getBooksResponse,
-          });
-        }
-        if (url.indexOf("/api/developmentbooks/getDiscountDetails") !== -1) {
-          return Promise.resolve({
-            status: 200,
-            data: getDiscountDetailsResponse,
-          });
-        }
-        return new Promise(() => {});
-      });
+      const { container } = setUp();
 
-      const { container } = render(<Dashboard />);
       const discounts = await waitFor(() => {
         const discountWrapper = container.firstChild.querySelector(
           ".discount-cart-panel ul.discount"
@@ -99,23 +104,7 @@ describe("load development books dashboard", () => {
     });
 
     test("should display calculate price button", async () => {
-      axios.get.mockImplementation((url) => {
-        if (url.indexOf("/api/developmentbooks/getBooks") !== -1) {
-          return Promise.resolve({
-            status: 200,
-            data: getBooksResponse,
-          });
-        }
-        if (url.indexOf("/api/developmentbooks/getDiscountDetails") !== -1) {
-          return Promise.resolve({
-            status: 200,
-            data: getDiscountDetailsResponse,
-          });
-        }
-        return new Promise(() => {});
-      });
-
-      const { container } = render(<Dashboard />);
+      const { container } = setUp();
 
       await waitFor(() => container.getElementsByClassName("product"));
       expect(container.querySelector(".calculate-price-btn")).toBeVisible();
