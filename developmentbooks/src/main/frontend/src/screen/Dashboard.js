@@ -2,12 +2,14 @@ import React, { useEffect, useState, Fragment } from "react";
 import "../styles/dashboard.css";
 import axios from "axios";
 import Product from "../components/Product";
+import { getFormattedPrice } from "../utils/helpers";
 
 const Dashboard = () => {
   const [books, setBooks] = useState([]);
   const [discounts, setDiscounts] = useState({});
   const [cart, setCart] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [price, setPrice] = useState(null);
 
   useEffect(() => {
     axios
@@ -43,10 +45,14 @@ const Dashboard = () => {
   };
 
   const fetchPriceForCart = () => {
-    axios.post(
-      "http://localhost:8080/api/developmentbooks/fetchPriceSummary",
-      cart
-    );
+    axios
+      .post(
+        "http://localhost:8080/api/developmentbooks/fetchPriceSummary",
+        cart
+      )
+      .then((response) => {
+        setPrice(response.data);
+      });
   };
 
   return (
@@ -86,6 +92,11 @@ const Dashboard = () => {
                 >
                   Calculate Price
                 </button>
+                {price !== null && (
+                  <div className="price">
+                    Price: {getFormattedPrice(price.actualPrice)}
+                  </div>
+                )}
               </div>
             </div>
           </Fragment>

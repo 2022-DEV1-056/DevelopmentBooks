@@ -1,4 +1,4 @@
-import { render, waitFor, fireEvent } from "@testing-library/react";
+import { render, waitFor, fireEvent, getByText } from "@testing-library/react";
 import Dashboard from "../../screen/Dashboard";
 import axios from "axios";
 import getBooksResponse from "./responses/getBooks.json";
@@ -188,6 +188,52 @@ describe("load development books dashboard", () => {
         expect.stringMatching(/\/api\/developmentbooks\/fetchPriceSummary/),
         cart
       );
+    });
+
+    test("should get the price when calculate price button is clicked with a product in cart", async () => {
+      const { container } = setUp();
+      axios.post.mockImplementation((url) => {
+        if (url.indexOf("/api/developmentbooks/fetchPriceSummary") !== -1) {
+          return Promise.resolve({
+            status: 200,
+            data: {
+              listOfBookGroups: [
+                {
+                  listOfbooks: [2],
+                  discountPercentage: 0,
+                  actualPrice: 50.0,
+                  discount: 0.0,
+                },
+              ],
+              actualPrice: 50.0,
+              totalDiscount: 0.0,
+              finalPrice: 50.0,
+            },
+          });
+        }
+
+        return new Promise(() => {});
+      });
+
+      await waitFor(() => container.getElementsByClassName("products"));
+      fireEvent(
+        container.getElementsByClassName("add")[0],
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        container.querySelector(".calculate-price-btn"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      await waitFor(() => container.getElementsByClassName("price"));
+      const price = container.querySelector(".price");
+      expect(getByText(price, "Price: 50,00 €")).toBeVisible();
     });
   });
 });

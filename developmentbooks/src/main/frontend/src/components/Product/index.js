@@ -1,16 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { QuantityPicker } from "react-qty-picker";
+import { getFormattedPrice } from "../../utils/helpers";
 
 const Product = (props) => {
   const { title, author, imageUrl, price, id, year } = props.book;
-
-  const getFormattedPrice = (price) => {
-    return new Intl.NumberFormat("de-DE", {
-      style: "currency",
-      currency: "EUR",
-    }).format(price);
-  };
 
   return (
     <div className="product" key={id}>
