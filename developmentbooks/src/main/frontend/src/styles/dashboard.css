@@ -69,3 +69,30 @@
     line-height: 3.2rem;
     color: darkgreen;
 }
+
+.cart {
+    background-color: #eee;
+    border: 1px solid #aaa;
+    line-height: 2rem;
+    padding: 1rem;
+    font-weight: bold;
+  }
+  
+.calculate-price-btn {
+    display: block;
+    font-size: 0.9rem;
+    margin: 0 auto;
+    width: 80%;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: green;
+    font-weight: bold;
+    padding: 0.625rem;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.calculate-price-btn:hover {
+    background-color:darkgreen;
+    transition: 0.7s;
+}

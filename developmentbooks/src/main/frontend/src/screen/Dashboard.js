@@ -48,6 +48,9 @@ const Dashboard = () => {
                   </li>
                 ))}
               </ul>
+              <div className="cart">
+                <button className="calculate-price-btn">Calculate Price</button>
+              </div>
             </div>
           </Fragment>
         )}
