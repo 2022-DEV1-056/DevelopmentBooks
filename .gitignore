@@ -12,3 +12,5 @@ buildNumber.properties
 developmentbooks/.classpath
 developmentbooks/.project
 *.prefs
+/developmentbooks/src/main/frontend/node_modules
+/developmentbooks/src/main/frontend/package-lock.json
