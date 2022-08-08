@@ -100,3 +100,7 @@
 .calculate-price-btn:disabled {
     background-color:grey;
  }
+
+.line_through{
+    text-decoration: line-through;
+}

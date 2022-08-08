@@ -55,6 +55,13 @@ const Dashboard = () => {
       });
   };
 
+  const getPriceClassName = (price) => {
+    if (price.totalDiscount > 0) {
+      return "line_through";
+    }
+    return "";
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -93,9 +100,20 @@ const Dashboard = () => {
                   Calculate Price
                 </button>
                 {price !== null && (
-                  <div className="price">
-                    Price: {getFormattedPrice(price.actualPrice)}
-                  </div>
+                  <Fragment>
+                    <div className="price">
+                      Price:{" "}
+                      <span className={getPriceClassName(price)}>
+                        {getFormattedPrice(price.actualPrice)}
+                      </span>
+                    </div>
+
+                    {price.totalDiscount > 0 && (
+                      <div className="discounted-price">
+                        Discounted Price: {getFormattedPrice(price.finalPrice)}
+                      </div>
+                    )}
+                  </Fragment>
                 )}
               </div>
             </div>
