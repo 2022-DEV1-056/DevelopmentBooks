@@ -136,5 +136,29 @@ describe("load development books dashboard", () => {
         container.querySelector(".calculate-price-btn")
       ).not.toBeDisabled();
     });
+
+    test("should disable the calculate price button when cart is empty", async () => {
+      const { container } = setUp();
+
+      const products = await waitFor(() =>
+        container.getElementsByClassName("products")
+      );
+      fireEvent(
+        products[0].querySelector(".add"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        products[0].querySelector(".sub"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(container.querySelector(".calculate-price-btn")).toBeDisabled();
+    });
   });
 });
