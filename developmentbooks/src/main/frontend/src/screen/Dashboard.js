@@ -12,6 +12,7 @@ const Dashboard = () => {
       .then((response) => {
         setBooks(response.data);
       });
+    axios.get("http://localhost:8080/api/developmentbooks/getDiscountDetails");
   }, []);
   return (
     <div className="container">

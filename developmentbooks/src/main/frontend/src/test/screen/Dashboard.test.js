@@ -57,4 +57,16 @@ describe("load development books dashboard", () => {
       "Loading..."
     );
   });
+
+  describe("Discount container", () => {
+    test("should call get discount details API", () => {
+      axios.get.mockImplementation(() => new Promise(() => {}));
+
+      render(<Dashboard />);
+
+      expect(axios.get).toHaveBeenCalledWith(
+        expect.stringMatching(/\/api\/developmentbooks\/getDiscountDetails/)
+      );
+    });
+  });
 });
