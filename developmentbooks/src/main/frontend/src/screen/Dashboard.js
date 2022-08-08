@@ -107,7 +107,23 @@ const Dashboard = () => {
                         {getFormattedPrice(price.actualPrice)}
                       </span>
                     </div>
-
+                    <div className="discount-summary">
+                      {price.listOfBookGroups.map((listOfBooks, summaryKey) => {
+                        if (listOfBooks.discount > 0) {
+                          return (
+                            <div
+                              className="discount-item-summary"
+                              key={summaryKey}
+                            >
+                              Discount of {listOfBooks.discountPercentage}%
+                              applied on {listOfBooks.listOfbooks.length} books
+                            </div>
+                          );
+                        } else {
+                          return null;
+                        }
+                      })}
+                    </div>
                     {price.totalDiscount > 0 && (
                       <div className="discounted-price">
                         Discounted Price: {getFormattedPrice(price.finalPrice)}

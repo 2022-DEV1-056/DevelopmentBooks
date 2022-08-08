@@ -288,5 +288,62 @@ describe("load development books dashboard", () => {
       const price = container.querySelector(".discounted-price");
       expect(getByText(price, "Discounted Price: 95,00 €")).toBeVisible();
     });
+
+    test("should display the discount summary when discount applied on cart", async () => {
+      const { container } = setUp();
+      axios.post.mockImplementation((url) => {
+        if (url.indexOf("/api/developmentbooks/fetchPriceSummary") !== -1) {
+          return Promise.resolve({
+            status: 200,
+            data: {
+              listOfBookGroups: [
+                {
+                  listOfbooks: [1, 2],
+                  discountPercentage: 5,
+                  actualPrice: 100.0,
+                  discount: 5.0,
+                },
+              ],
+              actualPrice: 100.0,
+              totalDiscount: 5.0,
+              finalPrice: 95.0,
+            },
+          });
+        }
+
+        return new Promise(() => {});
+      });
+
+      await waitFor(() => container.getElementsByClassName("products"));
+      fireEvent(
+        container.getElementsByClassName("add")[0],
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        container.getElementsByClassName("add")[1],
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        container.querySelector(".calculate-price-btn"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      await waitFor(() =>
+        container.getElementsByClassName("discount-item-summary")
+      );
+
+      expect(container.querySelector(".discount-item-summary")).toContainHTML(
+        "Discount of 5% applied on 2 books"
+      );
+    });
   });
 });
