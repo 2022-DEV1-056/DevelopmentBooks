@@ -35,6 +35,9 @@ class DevelopmentBooksControllerTest {
 	@Value("${developmentbooks.controller.path}${developmentbooks.endpoints.pricesummary}")
 	private String FETCH_PRICE_SUMMARY_ENDPOINT;
 
+	@Value("${developmentbooks.controller.path}${developmentbooks.endpoints.getDiscountDetails}")
+	private String GET_DISCOUNT_DETAILS_ENDPOINT;
+
 	@Autowired
 	private DevelopmentBooksController developmentBooksController;
 
@@ -73,4 +76,11 @@ class DevelopmentBooksControllerTest {
 		mockMvc.perform(post(FETCH_PRICE_SUMMARY_ENDPOINT).contentType(MediaType.APPLICATION_JSON)
 				.content(new ObjectMapper().writeValueAsString(listOfBooks))).andExpect(status().isOk());
 	}
+
+	@Test
+	@DisplayName("API getDiscountDetails should return status OK")
+	void getDiscountDetails_Api_shouldReturn_StatusOK() throws Exception {
+		mockMvc.perform(get(GET_DISCOUNT_DETAILS_ENDPOINT)).andExpect(status().isOk());
+	}
+
 }

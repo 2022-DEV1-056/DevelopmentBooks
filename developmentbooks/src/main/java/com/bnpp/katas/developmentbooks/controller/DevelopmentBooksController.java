@@ -1,6 +1,7 @@
 package com.bnpp.katas.developmentbooks.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,4 +35,10 @@ public class DevelopmentBooksController {
 	public PriceSummaryDto fetchPriceSummary(@RequestBody List<BookDto> listOfBooks) {
 		return calculatePriceService.getPriceSummary(listOfBooks);
 	}
+
+	@GetMapping("${developmentbooks.endpoints.getDiscountDetails}")
+	public Map<Integer, Integer> getDiscountDetails() {
+		return developmentBooksService.getDiscountDetails();
+	}
+
 }
