@@ -160,5 +160,34 @@ describe("load development books dashboard", () => {
 
       expect(container.querySelector(".calculate-price-btn")).toBeDisabled();
     });
+
+    test("should call fetch price API on calculate price button click", async () => {
+      const cart = [{ id: 1, quantity: 1 }];
+      const { container } = setUp();
+      axios.post.mockImplementation((url) => new Promise(() => {}));
+
+      const products = await waitFor(() =>
+        container.getElementsByClassName("products")
+      );
+      fireEvent(
+        products[0].querySelector(".add"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        container.querySelector(".calculate-price-btn"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      expect(axios.post).toHaveBeenCalledWith(
+        expect.stringMatching(/\/api\/developmentbooks\/fetchPriceSummary/),
+        cart
+      );
+    });
   });
 });

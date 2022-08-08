@@ -42,6 +42,13 @@ const Dashboard = () => {
     setIsButtonDisabled(cart.length === 0);
   };
 
+  const fetchPriceForCart = () => {
+    axios.post(
+      "http://localhost:8080/api/developmentbooks/fetchPriceSummary",
+      cart
+    );
+  };
+
   return (
     <div className="container">
       <div className="header">
@@ -75,6 +82,7 @@ const Dashboard = () => {
                 <button
                   className="calculate-price-btn"
                   disabled={isButtonDisabled}
+                  onClick={fetchPriceForCart}
                 >
                   Calculate Price
                 </button>
