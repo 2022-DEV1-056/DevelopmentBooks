@@ -1,6 +1,7 @@
 package com.bnpp.katas.developmentbooks.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.bnpp.katas.developmentbooks.dto.BookDto;
 import com.bnpp.katas.developmentbooks.dto.PriceSummaryDto;
+import com.bnpp.katas.developmentbooks.exceptions.BookNotFoundException;
 
 @SpringBootTest
 class CalculatePriceServiceTest {
@@ -23,6 +25,8 @@ class CalculatePriceServiceTest {
 	private static final int THREE = 3;
 	private static final int FOUR = 4;
 	private static final int FIVE = 5;
+	private static final int SIX = 6;
+	private static final int SEVEN = 7;
 	private static final double BOOK_PRICE = 50.00;
 	private static final double PRICE_OF_TWO_DISTINCT_BOOKS = 95.00;
 	private static final double PRICE_OF_THREE_DISTINCT_BOOKS = 135.00;
@@ -179,9 +183,23 @@ class CalculatePriceServiceTest {
 		listOfBooks.add(fifthBook);
 
 		PriceSummaryDto priceSummary = calculatePriceService.getPriceSummary(listOfBooks);
-		
+
 		assertEquals(ACTUALPRICE_OF_NINE_BOOKS, priceSummary.getActualPrice());
 		assertEquals(DISCOUNTPRICE_FOR_NINEBOOKS, priceSummary.getTotalDiscount());
 		assertEquals(PRICE_OF_BOOKS_APPLY_DISCOUNT_TO_DISTINCT_BOOKS, priceSummary.getFinalPrice());
+	}
+
+	@Test
+	@DisplayName("fetch price summary should throw book not found exception on invalid book id")
+	void fetchPriceSummary_shouldThrowBookNotFoundExceptionOnInvalidBookId() {
+		List<BookDto> listOfBooks = new ArrayList<BookDto>();
+		BookDto firstBook = new BookDto(ONE, ONE);
+		BookDto secondBook = new BookDto(SIX, ONE);
+		BookDto thirdBook = new BookDto(SEVEN, ONE);
+		listOfBooks.add(firstBook);
+		listOfBooks.add(secondBook);
+		listOfBooks.add(thirdBook);
+
+		assertThrows(BookNotFoundException.class, () -> calculatePriceService.getPriceSummary(listOfBooks));
 	}
 }

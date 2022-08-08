@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.bnpp.katas.developmentbooks.dto.BookDto;
 import com.bnpp.katas.developmentbooks.dto.BookGroup;
 import com.bnpp.katas.developmentbooks.dto.PriceSummaryDto;
+import com.bnpp.katas.developmentbooks.exceptions.BookNotFoundException;
 import com.bnpp.katas.developmentbooks.store.DevelopmentBooksEnum;
 import com.bnpp.katas.developmentbooks.store.DiscountProviderEnum;
 
@@ -26,6 +27,7 @@ public class CalculatePriceService {
 	private static final int ONE_QUANTITY = 1;
 
 	public PriceSummaryDto getPriceSummary(List<BookDto> listOfBooks) {
+		validateBooks(listOfBooks);
 		Map<Integer, Integer> bookIdQuantityMap = listOfBooks.stream()
 				.collect(Collectors.toMap(BookDto::getId, BookDto::getQuantity));
 		List<BookGroup> listOfBookGroup = getBookGroupswithDiscount(bookIdQuantityMap, new ArrayList<>());
@@ -39,6 +41,13 @@ public class CalculatePriceService {
 		priceSummaryDto.setTotalDiscount(discount);
 		priceSummaryDto.setFinalPrice(actualPrice - discount);
 		return priceSummaryDto;
+	}
+
+	private void validateBooks(List<BookDto> listOfBooks) {
+		Map<Integer, Double> bookIdPriceMap = getBookIdPriceMap();
+		List<Integer> missingBookIds = listOfBooks.stream().filter(book -> !bookIdPriceMap.containsKey(book.getId())).map(BookDto::getId).collect(Collectors.toList());
+		if(!missingBookIds.isEmpty())
+			throw new BookNotFoundException(missingBookIds);
 	}
 
 	private List<BookGroup> getBookGroupswithDiscount(Map<Integer, Integer> bookIdQuantityMap,
