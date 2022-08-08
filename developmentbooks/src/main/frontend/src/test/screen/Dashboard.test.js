@@ -203,6 +203,7 @@ describe("load development books dashboard", () => {
                   discountPercentage: 0,
                   actualPrice: 50.0,
                   discount: 0.0,
+                  numberOfBooks: 1,
                 },
               ],
               actualPrice: 50.0,
@@ -249,6 +250,7 @@ describe("load development books dashboard", () => {
                   discountPercentage: 5,
                   actualPrice: 100.0,
                   discount: 5.0,
+                  numberOfBooks: 2,
                 },
               ],
               actualPrice: 100.0,
@@ -302,6 +304,7 @@ describe("load development books dashboard", () => {
                   discountPercentage: 5,
                   actualPrice: 100.0,
                   discount: 5.0,
+                  numberOfBooks: 2,
                 },
               ],
               actualPrice: 100.0,
@@ -344,6 +347,71 @@ describe("load development books dashboard", () => {
       expect(container.querySelector(".discount-item-summary")).toContainHTML(
         "Discount of 5% applied on 2 books"
       );
+    });
+
+    test("should display the discount summary including books without discounts", async () => {
+      const { container } = setUp();
+      axios.post.mockImplementation((url) => {
+        if (url.indexOf("/api/developmentbooks/fetchPriceSummary") !== -1) {
+          return Promise.resolve({
+            status: 200,
+            data: {
+              listOfBookGroups: [
+                {
+                  listOfbooks: [2, 1],
+                  discountPercentage: 5,
+                  actualPrice: 100.0,
+                  discount: 5.0,
+                  numberOfBooks: 2,
+                },
+                {
+                  listOfbooks: [2],
+                  discountPercentage: 0,
+                  actualPrice: 50.0,
+                  discount: 0.0,
+                  numberOfBooks: 1,
+                },
+              ],
+              actualPrice: 150.0,
+              totalDiscount: 5.0,
+              finalPrice: 145.0,
+            },
+          });
+        }
+
+        return new Promise(() => {});
+      });
+
+      await waitFor(() => container.getElementsByClassName("products"));
+      fireEvent(
+        container.getElementsByClassName("add")[0],
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        container.getElementsByClassName("add")[1],
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+      fireEvent(
+        container.querySelector(".calculate-price-btn"),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+        })
+      );
+
+      await waitFor(() =>
+        container.getElementsByClassName("undiscounted-item-summary")
+      );
+
+      expect(
+        container.querySelector(".undiscounted-item-summary")
+      ).toContainHTML("No Discount applied on 1 book(s)");
     });
   });
 });

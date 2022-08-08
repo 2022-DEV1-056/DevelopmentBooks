@@ -116,11 +116,19 @@ const Dashboard = () => {
                               key={summaryKey}
                             >
                               Discount of {listOfBooks.discountPercentage}%
-                              applied on {listOfBooks.listOfbooks.length} books
+                              applied on {listOfBooks.numberOfBooks} books
                             </div>
                           );
                         } else {
-                          return null;
+                          return (
+                            <div
+                              className="undiscounted-item-summary"
+                              key={summaryKey}
+                            >
+                              No Discount applied on {listOfBooks.numberOfBooks}{" "}
+                              book(s)
+                            </div>
+                          );
                         }
                       })}
                     </div>

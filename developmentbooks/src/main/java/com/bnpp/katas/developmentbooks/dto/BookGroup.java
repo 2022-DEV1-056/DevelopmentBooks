@@ -12,4 +12,5 @@ public class BookGroup {
 	private int discountPercentage;
 	private double actualPrice;
 	private double discount;
+	private int numberOfBooks;
 }

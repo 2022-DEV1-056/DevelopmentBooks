@@ -119,7 +119,8 @@ public class CalculatePriceService {
 		Set<Integer> bookIds = bookIdQuantityMap.keySet();
 		double actualPrice = bookIds.stream()
 				.mapToDouble(bookId -> bookIdPriceMap.get(bookId) * bookIdQuantityMap.get(bookId)).sum();
-		return new BookGroup(bookIds.stream().collect(Collectors.toList()), ZERO_PERCENT, actualPrice, NO_DISCOUNT);
+		int numberOfBooks = bookIdQuantityMap.values().stream().mapToInt(Integer::intValue).sum();
+		return new BookGroup(bookIds.stream().collect(Collectors.toList()), ZERO_PERCENT, actualPrice, NO_DISCOUNT, numberOfBooks);
 	}
 
 	private List<Integer> getApplicableDiscounts(int numberOfBooks) {
@@ -139,7 +140,7 @@ public class CalculatePriceService {
 				.sum();
 		int discountPercentage = getDiscountPercentage(listOfBookToGroup.size());
 		double discount = (actualPrice * discountPercentage) / HUNDRED;
-		return new BookGroup(listOfBookToGroup, discountPercentage, actualPrice, discount);
+		return new BookGroup(listOfBookToGroup, discountPercentage, actualPrice, discount, listOfBookToGroup.size());
 
 	}
 
