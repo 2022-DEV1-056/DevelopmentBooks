@@ -109,5 +109,13 @@ describe("load development books dashboard", () => {
       await waitFor(() => container.getElementsByClassName("product"));
       expect(container.querySelector(".calculate-price-btn")).toBeVisible();
     });
+
+    test("should display calculate price as disabled by default", async () => {
+      const { container } = setUp();
+
+      await waitFor(() => container.getElementsByClassName("product"));
+
+      expect(container.querySelector(".calculate-price-btn")).toBeDisabled();
+    });
   });
 });

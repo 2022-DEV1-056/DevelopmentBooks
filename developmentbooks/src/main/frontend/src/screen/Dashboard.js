@@ -49,7 +49,9 @@ const Dashboard = () => {
                 ))}
               </ul>
               <div className="cart">
-                <button className="calculate-price-btn">Calculate Price</button>
+                <button className="calculate-price-btn" disabled={true}>
+                  Calculate Price
+                </button>
               </div>
             </div>
           </Fragment>
