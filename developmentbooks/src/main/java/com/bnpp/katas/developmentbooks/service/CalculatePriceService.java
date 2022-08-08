@@ -12,6 +12,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 
 import com.bnpp.katas.developmentbooks.dto.BookDto;
@@ -35,7 +37,7 @@ public class CalculatePriceService {
 				.collect(Collectors.toMap(BookDto::getId, BookDto::getQuantity));
 		List<Integer> listOfApplicableDiscounts = getApplicableDiscounts(bookIdQuantityMap.size());
 		PriceSummaryDto priceSummaryDto = new PriceSummaryDto();
-		if (!listOfApplicableDiscounts.isEmpty()) {
+		if (CollectionUtils.isNotEmpty(listOfApplicableDiscounts)) {
 			updatePriceSummaryWithDiscount(bookIdQuantityMap, listOfApplicableDiscounts, priceSummaryDto);
 		} else {
 			updatePriceSummaryWithoutDiscount(bookIdQuantityMap, priceSummaryDto);
@@ -57,7 +59,7 @@ public class CalculatePriceService {
 			Map<Integer, Integer> bookIdQuantityMapCopy = cloneMap(bookIdQuantityMap);
 			List<BookGroup> listOfBookGroup = getBookGroupswithDiscount(bookIdQuantityMapCopy, new ArrayList<>(),
 					numberOfBooksToGroup);
-			if (!bookIdQuantityMapCopy.isEmpty()) {
+			if (CollectionUtils.isNotEmpty(bookIdQuantityMapCopy.keySet())) {
 				BookGroup booksWithoutDiscount = getBookGroupWithoutDiscount(bookIdQuantityMapCopy);
 				listOfBookGroup.add(booksWithoutDiscount);
 			}
@@ -84,9 +86,10 @@ public class CalculatePriceService {
 
 	private void validateBooks(List<BookDto> listOfBooks) {
 		Map<Integer, Double> bookIdPriceMap = getBookIdPriceMap();
-		List<Integer> missingBookIds = listOfBooks.stream().filter(book -> !bookIdPriceMap.containsKey(book.getId()))
-				.map(BookDto::getId).collect(Collectors.toList());
-		if (!missingBookIds.isEmpty()) {
+		List<Integer> missingBookIds = listOfBooks.stream()
+				.filter(book -> BooleanUtils.isFalse(bookIdPriceMap.containsKey(book.getId()))).map(BookDto::getId)
+				.collect(Collectors.toList());
+		if (CollectionUtils.isNotEmpty(missingBookIds)) {
 			throw new BookNotFoundException(missingBookIds);
 		}
 	}
