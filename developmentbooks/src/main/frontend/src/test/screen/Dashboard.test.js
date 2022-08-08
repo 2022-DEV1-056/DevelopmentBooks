@@ -47,4 +47,14 @@ describe("load development books dashboard", () => {
 
     expect(products.length).toBe(5);
   });
+
+  test("should display loading indicator when there is no data", () => {
+    axios.get.mockImplementation(() => new Promise(() => {}));
+
+    const { container } = render(<Dashboard />);
+
+    expect(container.querySelector(".loading-indicator")).toHaveTextContent(
+      "Loading..."
+    );
+  });
 });

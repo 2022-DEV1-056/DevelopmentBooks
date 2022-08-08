@@ -19,15 +19,20 @@ const Dashboard = () => {
         <h1 className="title">Development Books</h1>
       </div>
       <div className="content">
-        <div className="products">
-          {books.map((book) => {
-            return (
-              <Fragment key={book.id}>
-                <Product book={book} />
-              </Fragment>
-            );
-          })}
-        </div>
+        {books.length === 0 && (
+          <h1 className="loading-indicator">Loading...</h1>
+        )}
+        {books.length !== 0 && (
+          <div className="products">
+            {books.map((book) => {
+              return (
+                <Fragment key={book.id}>
+                  <Product book={book} />
+                </Fragment>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
