@@ -1,4 +1,4 @@
-import { render, within } from "@testing-library/react";
+import { render, within, fireEvent } from "@testing-library/react";
 import Product from "../../components/Product";
 
 const setUp = () => {
@@ -38,5 +38,21 @@ describe("Product component", () => {
     expect(
       container.querySelector(".product-quantity").firstElementChild
     ).toHaveAttribute("data-quantity", "");
+  });
+
+  test("should increase quantity on add button click", () => {
+    const { container } = setUp();
+
+    const quantityPicker =
+      container.querySelector(".product-quantity").firstElementChild;
+    fireEvent(
+      quantityPicker.querySelector(".add"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+
+    expect(quantityPicker.querySelector("input")).toHaveValue(1);
   });
 });
