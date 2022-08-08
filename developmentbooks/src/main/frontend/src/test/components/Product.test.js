@@ -55,4 +55,27 @@ describe("Product component", () => {
 
     expect(quantityPicker.querySelector("input")).toHaveValue(1);
   });
+
+  test("should reduce quantity on subtract button click", () => {
+    const { container } = setUp();
+
+    const quantityPicker =
+      container.querySelector(".product-quantity").firstElementChild;
+    fireEvent(
+      quantityPicker.querySelector(".add"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    fireEvent(
+      quantityPicker.querySelector(".sub"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+
+    expect(quantityPicker.querySelector("input")).toHaveValue(0);
+  });
 });
