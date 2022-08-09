@@ -1,5 +1,6 @@
 package com.bnpp.katas.developmentbooks.service;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -26,6 +27,7 @@ class DevelopmentBooksServiceTest {
 	void getBooks_shouldReturnListOfFiveBooks() {
 		List<Book> books = developmentBooksService.getBooks();
 
+		assertNotNull(books);
 		assertEquals(NUMBER_OF_BOOKS, books.size(), "Got all development books");
 	}
 
