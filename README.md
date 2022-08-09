@@ -19,14 +19,6 @@ One copy of the five books costs 50 EUR.
 - If you go for the whole hog, and buy all 5, you get a huge 25% discount.
 - Note that if you buy, say, 4 books, of which 3 are different titles, you get a 10% discount on the 3 that form part of a set, but the 4th book still costs 50 EUR.
 
-
-# Purpose
-
-Develop a application to **calculate the best price** of any conceivable shopping basket by applicable the above discounts using **Test Driven Development** (TDD). 
-
-- **Backend** : Java & Springboot
-- **Frontend**: ReactJS
-
 # Functional case
 
 If the shopping basket contains the below books.
@@ -43,3 +35,61 @@ We can avail the discounts for above shopping basket containing 8 books by group
 - (4 * 50 EUR) - 20% [first book, second book, third book, fifth book]
 
 = (160 EUR + 160 EUR) => **320 EUR**
+
+# Purpose
+
+Develop a application to **calculate the best price** of any conceivable shopping basket by applicable the above discounts using **Test Driven Development** (TDD). 
+
+# Tools used for developing this application 
+
+- **Backend** : Java 11 & Springboot 2.7
+- **Frontend**: ReactJS 17.0.2
+- **Build tool**: Maven 3.x
+
+## How to build the application
+
+* Clone this repository 
+```
+https://github.com/2022-DEV1-056/DevelopmentBooks
+```
+* You can build the project and run the tests by running ```mvn clean install```
+
+## How to run the application
+* By default the application will start on **port 8080**. If you want the application to run on different port 8082, you can pass additional parameter **--server.port=8082** while starting the application (or) you can update the **server.port** in **application.properties**
+* Once successfully built, you can run the service by one of this commands:
+```
+	java -jar target\developmentbooks-1.0.0-SNAPSHOT.jar
+			
+							(or)
+							
+	java -jar target\developmentbooks-1.0.0-SNAPSHOT.jar --server.port=8082
+```
+
+Once the application runs you should see below message in console log
+```
+
+2022-08-09 11:53:55.767  INFO 6976 --- [           main] c.b.k.d.DevelopmentBooksApplication      : Started DevelopmentBooksApplication in 112.716 seconds (JVM running for 113.26)
+2022-08-09 11:54:08.188  INFO 6976 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-08-09 11:54:08.189  INFO 6976 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2022-08-09 11:54:08.191  INFO 6976 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+
+```
+## How to access the application
+
+* Once the application started successfully, you can access the application by launching the below url in the browser:
+```
+	http://localhost:8080/
+	
+		(or)
+		
+	http://localhost:<PORT>/
+```
+## Test reports
+
+* Once after successful build of ```mvn clean install```, navigate to target folder of the project root directory 
+
+- **Jacoco code coverage report: ** will be availabe in ```target\site\jacoco``` folder. you can view the report by launching index.html 
+
+- **Pitest coverage report: ** will be availabe in ```target\pit-reports\<TIMESTAMP_FOLDER>``` you can view the report by launching index.html
+
+- **Javascript test coverage: ** Navigate to ```\src\main\frontend``` in command prompt and execute ```npm test -- --coverage --watchAll```
