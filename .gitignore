@@ -15,3 +15,4 @@ developmentbooks/.project
 /developmentbooks/src/main/frontend/node_modules
 /developmentbooks/src/main/frontend/package-lock.json
 /developmentbooks/src/main/frontend/build
+/developmentbooks/src/main/frontend/coverage
