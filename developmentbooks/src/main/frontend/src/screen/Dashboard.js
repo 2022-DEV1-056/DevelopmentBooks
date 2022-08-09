@@ -11,17 +11,21 @@ const Dashboard = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [price, setPrice] = useState(null);
 
+  const fetchBooks = () => {
+    axios.get("/api/developmentbooks/getBooks").then((response) => {
+      setBooks(response.data);
+    });
+  };
+
+  const fetchDiscounts = () => {
+    axios.get("/api/developmentbooks/getDiscountDetails").then((response) => {
+      setDiscounts(response.data);
+    });
+  };
+
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/developmentbooks/getBooks")
-      .then((response) => {
-        setBooks(response.data);
-      });
-    axios
-      .get("http://localhost:8080/api/developmentbooks/getDiscountDetails")
-      .then((response) => {
-        setDiscounts(response.data);
-      });
+    fetchBooks();
+    fetchDiscounts();
   }, []);
 
   const addToCart = (id, value) => {
@@ -46,10 +50,7 @@ const Dashboard = () => {
 
   const fetchPriceForCart = () => {
     axios
-      .post(
-        "http://localhost:8080/api/developmentbooks/fetchPriceSummary",
-        cart
-      )
+      .post("/api/developmentbooks/fetchPriceSummary", cart)
       .then((response) => {
         setPrice(response.data);
       });
@@ -62,16 +63,20 @@ const Dashboard = () => {
     return "";
   };
 
+  const isProductAndDiscountDetailsAvailable = () => {
+    return books.length !== 0 && discounts !== {};
+  };
+
   return (
     <div className="container">
       <div className="header">
         <h1 className="title">Development Books</h1>
       </div>
       <div className="content">
-        {books.length === 0 && (
+        {!isProductAndDiscountDetailsAvailable() && (
           <h1 className="loading-indicator">Loading...</h1>
         )}
-        {books.length !== 0 && (
+        {isProductAndDiscountDetailsAvailable() && (
           <Fragment>
             <div className="products">
               {books.map((book) => {
