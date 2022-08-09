@@ -18,6 +18,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
+    <jacoco.version>0.8.8</jacoco.version>
   </properties>
 
   <dependencies>
@@ -90,6 +91,26 @@
         <configuration>
           <release>${java.version}</release>
         </configuration>
+	  </plugin>
+	  <plugin>
+		<groupId>org.jacoco</groupId>
+		<artifactId>jacoco-maven-plugin</artifactId>
+		<version>${jacoco.version}</version>
+		<executions>
+		  <execution>
+			<id>prepare-tests</id>
+			<goals>
+			  <goal>prepare-agent</goal>
+			</goals>
+		  </execution>
+		  <execution>
+			<id>test-report</id>
+			<phase>prepare-package</phase>
+			<goals>
+			  <goal>report</goal>
+			</goals>
+		  </execution>
+		</executions>
 	  </plugin>
     </plugins>
   </build>
