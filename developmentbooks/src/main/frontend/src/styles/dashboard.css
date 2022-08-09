@@ -9,6 +9,10 @@
     color: white;
 }
 
+.content{
+    display: -webkit-inline-box;
+}
+
 .products {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -22,6 +26,7 @@
     border: 1px solid #aaa;
     padding: 1.2rem 0.6rem 0.6rem 0.6rem;
     text-align: center;
+    line-height: 0.6rem;
 }
 
 .product-image{
@@ -34,9 +39,17 @@
   font-weight: bold;
 }
 
-.author{
-    font-size: 0.9rem;
+.author-year{
+    font-size: 0.9rem; 
     font-style: italic;
+}
+
+.author{
+    font-weight: 500;
+}
+
+.year{
+    margin: 0px 2px;
 }
 
 .product-price{
@@ -101,6 +114,31 @@
     background-color:grey;
  }
 
+ .calculate-price-btn:enabled {
+    color: #eee;
+ }
+
+ .price{
+    font-size: larger;
+ }
+
 .line_through{
     text-decoration: line-through;
+}
+
+.discounted-price{
+    font-size: larger;
+    color: darkgreen;
+}
+
+.discount-item-summary{
+    color: darkgreen;
+}
+
+.discount-summary{
+    text-align: left;
+}
+
+.undiscounted-item-summary{
+    color: darkslategray;
 }

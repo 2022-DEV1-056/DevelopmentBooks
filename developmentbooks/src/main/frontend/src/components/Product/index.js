@@ -12,8 +12,9 @@ const Product = (props) => {
         <img src={imageUrl} alt={title} />
       </div>
       <p className="product-title">{title}</p>
-      <p className="author">
-        By {author} ({year})
+      <p className="author-year">
+        <span className="author">By {author}</span>
+        <span className="year">({year})</span>
       </p>
       <p className="product-price">{getFormattedPrice(price)}</p>
       <span className="product-quantity">
